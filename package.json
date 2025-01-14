@@ -1,0 +1,43 @@
+{
+  "name": "react-javascript",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "React TypeScript on Replit, using Vite bundler",
+  "scripts": {
+    "dev": "concurrently -k -n frontend,backend -s all \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "dev:frontend": "vite",
+    "dev:backend": "nodemon -x \"node server.js\"",
+    "build": "vite build",
+    "preview": "vite preview",
+    "migrate": "prisma migrate dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^6.2.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "sqlite3": "^5.1.7",
+    "swr": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "@vitejs/plugin-react": "^4.2.0",
+    "autoprefixer": "^10.4.20",
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.1.9",
+    "postcss": "^8.4.49",
+    "prisma": "^6.2.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^3.4.15",
+    "tsx": "^4.7.1",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.0"
+  }
+}

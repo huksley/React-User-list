@@ -1,0 +1,61 @@
+
+body {
+  background-image: url("https://i.vuzopedia.ru/storage/app/uploads/public/664/1ea/e8c/6641eae8ca613847810178.webp");
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+main {
+  padding: 2em;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  margin-top: 10% !important;
+}
+
+/* h2 {
+  color: white;
+}
+ */
+/* .form {
+  color: white; 
+  font-size: 20px;
+  padding: 5px;
+  
+} */
+
+/* .fields {
+  padding-top: 10px;
+  font-size: 13px;
+} */
+
+/* label {
+    display: block;
+} */
+
+/* input, select{
+  border: 1px solid #d0d0d0;
+  border-radius: 3px;
+  font-size: 16px;
+  padding: 5px;
+} */
+
+.OBS {
+  padding: 5px;
+  font-size: 16px;
+  color: red;
+  min-height: 20px;
+  margin-bottom: 10px; 
+}
+
+button {
+  padding: 6px;
+  margin: 10px auto;
+  font-size: 15px;
+  border-radius: 3px;
+  border: 1px solid #d0d0d0;
+}
