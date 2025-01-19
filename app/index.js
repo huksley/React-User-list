@@ -51,6 +51,12 @@ app.get("/", (req, res) => {
   res.json({ status: "OK" });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+if (process.env.VERCEL !== "1") {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`)
+  })
+};
+
+export const dynamic = "force-dynamic";
+
+export { app };

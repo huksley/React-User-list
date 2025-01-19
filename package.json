@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "concurrently -k -n frontend,backend -s all \"npm run dev:frontend\" \"npm run dev:backend\"",
     "dev:frontend": "vite",
-    "dev:backend": "nodemon -x \"node server.js\"",
+    "dev:backend": "nodemon -x \"node app/index.js\"",
     "build": "vite build",
     "preview": "vite preview",
     "migrate": "prisma migrate dev"
@@ -19,6 +19,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "recharts": "^2.15.0",
     "sqlite3": "^5.1.7",
     "swr": "^2.3.0"
   },
