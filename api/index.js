@@ -59,4 +59,4 @@ if (process.env.VERCEL !== "1") {
 
 export const dynamic = "force-dynamic";
 
-export { app };
+export default app;
