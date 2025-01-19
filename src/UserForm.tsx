@@ -1,6 +1,21 @@
 import { useState, useMemo } from "react";
+import { User } from "./types";
 
-export default function UserForm({ minAge, title, onSave, onCancel, user, users }) {
+export default function UserForm({
+  minAge,
+  title,
+  onSave,
+  onCancel,
+  user,
+  users,
+}: {
+  minAge?: number;
+  title: string;
+  onSave: (user: User) => void;
+  onCancel: () => void;
+  user?: User;
+  users: User[];
+}) {
   const [valueFName, setValueFName] = useState(user?.firstName ?? "");
   const [valueLName, setValueLName] = useState(user?.lastName ?? "");
   const [valueAge, setValueAge] = useState(user?.age ?? undefined);
@@ -18,7 +33,7 @@ export default function UserForm({ minAge, title, onSave, onCancel, user, users 
     const websiteRegex = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/\S*)?$/;
     return valueWebsite === "" || websiteRegex.test(valueWebsite);
   }, [valueWebsite]);
-  
+
   useMemo(() => {
     const duplicate = users.some(
       (newUser) =>
@@ -34,11 +49,11 @@ export default function UserForm({ minAge, title, onSave, onCancel, user, users 
       id: user?.id ?? Math.floor(Date.now() / 1000),
       firstName: valueFName,
       lastName: valueLName,
-      age: valueAge,
+      age: valueAge ?? 0,
       country: valueCountry,
       email: valueEmail,
       website: valueWebsite || "",
-    };
+    } satisfies User;
     onSave(newUser);
   }
 
@@ -104,7 +119,7 @@ export default function UserForm({ minAge, title, onSave, onCancel, user, users 
             } border-solid rounded-lg`}
             onChange={(event) => setValueEmail(event.target.value)}
           />
-          {valueEmail && !valueEmailValid &&(
+          {valueEmail && !valueEmailValid && (
             <p className="text-red-600 text-[12px]">Please enter a valid email address.</p>
           )}
         </div>
@@ -145,7 +160,7 @@ export default function UserForm({ minAge, title, onSave, onCancel, user, users 
       </div>
 
       <div className="text-red-600 font-bold py-3 w-[300px] min-h-[48px] mb-[10px]">
-        {valueAge < (minAge ?? 18)
+        {valueAge && valueAge < (minAge ?? 18)
           ? "You need to be at least " + (minAge ?? 18) + " to continue"
           : isDuplicate
           ? "A user with this name already exists"
@@ -155,9 +170,9 @@ export default function UserForm({ minAge, title, onSave, onCancel, user, users 
       <button
         className="disabled:text-gray-200 disabled:bg-black disabled:border-black px-6 py-1 mr-10 bg-lime-300 border-lime-300 border-solid rounded-lg"
         disabled={
-          valueAge < (minAge ?? 18) ||
-          valueFName.trim === "" ||
-          valueLName.trim === "" ||
+          (valueAge && valueAge < (minAge ?? 18)) ||
+          valueFName.trim() === "" ||
+          valueLName.trim() === "" ||
           valueCountry === "" ||
           valueEmail === "" ||
           isDuplicate

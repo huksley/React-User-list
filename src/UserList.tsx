@@ -1,7 +1,18 @@
 import { useMemo } from "react";
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts";
+import { User } from "./types";
 
-function UserViewInList({ user, index, onDelete, onEdit }) {
+function UserViewInList({
+  user,
+  index,
+  onDelete,
+  onEdit,
+}: {
+  user: User;
+  index: number;
+  onDelete: (id: number) => void;
+  onEdit: (id: number) => void;
+}) {
   return (
     <li key={index} className="text-white border rounded-md p-2">
       <div className="flex gap-2">
@@ -32,7 +43,15 @@ function UserViewInList({ user, index, onDelete, onEdit }) {
   );
 }
 
-export default function UserList({ users, onDelete, onEdit }) {
+export default function UserList({
+  users,
+  onDelete,
+  onEdit,
+}: {
+  users: User[];
+  onDelete: (id: number) => void;
+  onEdit: (id: number) => void;
+}) {
   const sortedUsers = [...users].sort((a, b) => a.age - b.age);
 
   const averageAge = useMemo(() => {
@@ -76,23 +95,20 @@ export default function UserList({ users, onDelete, onEdit }) {
           <UserViewInList key={user.id} user={user} index={index} onDelete={onDelete} onEdit={onEdit} />
         ))}
       </ul>
-        <div className="text-white font-bold text-2xl my-3">
+      <div className="text-white font-bold text-2xl my-3">
         <p>Average Age: {averageAge}</p>
       </div>
       <div className="mt-6">
         <h3 className="text-white text-2xl font-bold mb-2">User Age</h3>
         <ResponsiveContainer width="100%" height={200}>
-          <BarChart 
-           data={chartData}
-           barSize={30}>
+          <BarChart data={chartData} barSize={30}>
             <XAxis dataKey="ageRange" stroke="#ffffff" />
-            <YAxis stroke="#ffffff" interval={1}/>
+            <YAxis stroke="#ffffff" interval={1} />
             <Tooltip />
             <Bar dataKey="users" fill="#009fff" />
           </BarChart>
         </ResponsiveContainer>
       </div>
     </div>
-    
   );
 }

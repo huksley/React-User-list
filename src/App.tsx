@@ -1,20 +1,21 @@
-import { useState} from "react";
+import { useState } from "react";
 import "./App.css";
 import UserForm from "./UserForm";
 import UserList from "./UserList";
 import useSWR from "swr";
+import { User } from "./types";
 
 export default function App() {
   const [action, setAction] = useState("");
-  const [editedUser, setEditedUser] = useState(undefined);
-  const { data: users, mutate } = useSWR("/api/user", (key) => fetch(key).then((res) => res.json()));
+  const [editedUser, setEditedUser] = useState<User | undefined>();
+  const { data: users, mutate } = useSWR<User[]>("/api/user", (key: string) => fetch(key).then((res) => res.json()));
 
   function handleOnCancel() {
     setAction("");
   }
 
   // Add a new user => POST /api/user
-  function handleOnSave(newUser) {
+  function handleOnSave(newUser: User) {
     fetch("/api/user", {
       method: "POST",
       headers: {
@@ -26,7 +27,7 @@ export default function App() {
   }
 
   // Edit existing user => PATCH /api/user/:id
-  function handleOnSaveEdit(editUser) {
+  function handleOnSaveEdit(editUser: User) {
     fetch("/api/user/" + editUser.id, {
       method: "PATCH",
       headers: {
@@ -38,12 +39,12 @@ export default function App() {
     setAction("");
   }
 
-  function handleOnEdit(id) {
-    setEditedUser(users.find((user) => user.id === id));
+  function handleOnEdit(id: number) {
+    setEditedUser(users?.find((user) => user.id === id));
     setAction("edit");
   }
 
-  function handleDeleteUser(id) {
+  function handleDeleteUser(id: number) {
     fetch("/api/user/" + id, {
       method: "DELETE",
     }).then((res) => res.json().then(() => mutate()));
