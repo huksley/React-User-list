@@ -2,3 +2,4 @@ node_modules
 .DS_Store
 prisma/dev.db*
 .vercel
+dist

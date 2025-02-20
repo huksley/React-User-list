@@ -47,15 +47,19 @@ app.get("/api/user/:id", async (req, res) => {
   res.json(response);
 });
 
-app.get("/", (req, res) => {
-  res.json({ status: "OK" });
-});
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("dist"));
+} else {
+  app.get("/", (req, res) => {
+    res.json({ status: "OK" });
+  });
+}
 
 if (process.env.VERCEL !== "1") {
   app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`)
-  })
-};
+    console.log(`Server running on port ${PORT}`);
+  });
+}
 
 export const dynamic = "force-dynamic";
 
