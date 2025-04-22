@@ -1,17 +1,82 @@
-## Running React on Replit
+## React User List
 
-[React](https://reactjs.org/) is a popular JavaScript library for building user interfaces.
+A simple React application for displaying and managing a list of users.
 
-[Vite](https://vitejs.dev/) is a blazing fast frontend build tool that includes features like Hot Module Reloading (HMR), optimized builds, and TypeScript support out of the box.
+---
 
-Using the two in conjunction is one of the fastest ways to build a web app.
+## Features
 
-### Getting Started
-- Hit run
-- Edit [App.jsx](#src/App.jsx) and watch it live update!
+- Fetches and displays a list of users
+- Responsive user interface
+- Easy to customize and extend
 
-By default, Replit runs the `dev` script, but you can configure it by changing the `run` field in the [configuration file](#.replit). Here are the vite docs for [serving production websites](https://vitejs.dev/guide/build.html)
+---
 
-### Typescript
+## Getting Started
 
-Just rename any file from `.jsx` to `.tsx`. You can also try our [TypeScript Template](https://replit.com/@replit/React-TypeScript)
+**Clone the repository:**
+```bash
+git clone https://github.com/huksley/React-User-list.git
+cd React-User-list
+```
+
+**Install dependencies:**
+```bash
+npm install
+```
+
+**Start the development server:**
+```bash
+npm start
+```
+
+The app will be available at `http://localhost:3000`.
+
+---
+
+## Usage
+
+- View the list of users on the main page.
+- Add, edit, or remove users (if functionality is implemented).
+- Customize user data or UI by editing the source files.
+
+---
+
+## Project Structure
+
+- `src/` – Main source code directory
+  - `components/` – React components
+  - `App.js` – Main application component
+  - `index.js` – Entry point
+
+---
+
+## Customization
+
+- To change the user data source, edit the relevant API call or data file in the project.
+- Modify or add components in the `components/` directory to extend functionality.
+
+---
+
+## Contributing
+
+Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
+
+---
+
+## License
+
+This project is licensed under the MIT License.
+
+---
+
+## Author
+
+[Huksley](https://github.com/huksley)
+
+---
+
+*Note: For more details, see the source code and comments in the repository.*
+
+Citations:
+[1] https://github.com/huksley/React-User-list/
