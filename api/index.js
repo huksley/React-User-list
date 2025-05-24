@@ -12,8 +12,12 @@ app.use(express.json());
 app.use(morgan('combined'))
 
 // Basic test route
-app.get("/api/health", (req, res) => {
-  res.json({ status: "OK", message: "Server is running, " + new Date().toISOString() });
+app.get("/api/health", async (req, res) => {
+  await prisma.user.findMany();
+  res.json({
+    status: "OK",
+    message: "Server is running, " + new Date().toISOString(),
+  });
 });
 
 app.get("/api/user", async (req, res) => {
@@ -63,6 +67,7 @@ if (process.env.VERCEL !== "1") {
   });
 }
 
+/** Tell Vercel to always re-render the page */
 export const dynamic = "force-dynamic";
-
 export default app;
+
