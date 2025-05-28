@@ -4,6 +4,8 @@ import UserForm from "./UserForm";
 import UserList from "./UserList";
 import useSWR from "swr";
 import { User } from "./types";
+import { Button } from "./components/ui/button";
+import { Plus } from "lucide-react";
 
 export default function App() {
   const [action, setAction] = useState("");
@@ -51,9 +53,11 @@ export default function App() {
   }
 
   return (
-    <main>
+    <main className="container mx-auto py-8 px-4">
       {users == null || users == undefined ? (
-        "Loading.."
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        </div>
       ) : action == "edit" ? (
         <UserForm
           title="Edit user"
@@ -63,17 +67,29 @@ export default function App() {
           users={users}
         />
       ) : action == "form" ? (
-        <UserForm title="Add user" onCancel={handleOnCancel} onSave={handleOnSave} users={users} />
+        <UserForm
+          title="Add user"
+          onCancel={handleOnCancel}
+          onSave={handleOnSave}
+          users={users}
+        />
       ) : (
-        <div>
-          <h2 className="text-white text-3xl font-bold p-1 mb-3">User list ({users.length})</h2>
-          <UserList users={users} onEdit={handleOnEdit} onDelete={handleDeleteUser} />
-          <button
-            className="px-6 py-1 mt-6 bg-neutral-400 border-neutral-400 border-solid rounded-lg"
-            onClick={() => setAction("form")}
-          >
-            Add new
-          </button>
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-3xl font-bold tracking-tight">User Management</h2>
+            <Button
+              onClick={() => setAction("form")}
+              className="flex items-center gap-2"
+            >
+              <Plus className="h-4 w-4" />
+              Add New User
+            </Button>
+          </div>
+          <UserList
+            users={users}
+            onEdit={handleOnEdit}
+            onDelete={handleDeleteUser}
+          />
         </div>
       )}
     </main>

@@ -1,6 +1,9 @@
 import { useMemo } from "react";
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts";
 import { User } from "./types";
+import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
+import { Button } from "./components/ui/button";
+import { Pencil, Trash2 } from "lucide-react";
 
 function UserViewInList({
   user,
@@ -14,32 +17,48 @@ function UserViewInList({
   onEdit: (id: number) => void;
 }) {
   return (
-    <li key={index} className="text-white border rounded-md p-2">
-      <div className="flex gap-2">
-        <span>{user.id}</span>
-        <span>{user.firstName}</span>
-        <span>{user.lastName}</span>
-        <span>{user.age}</span>
-        <span>{user.email}</span>
-        <span>{user.website}</span>
-        <span>{user.country}</span>
-      </div>
-
-      <div className="flex gap-2 mt-3">
-        <button
-          className="px-6 py-1 mr-3 bg-stone-600 border-stone-600 border-solid rounded-lg"
-          onClick={() => onEdit(user.id)}
-        >
-          Edit
-        </button>
-        <button
-          className="px-6 py-1 bg-red-600 border-red-600 border-solid rounded-lg"
-          onClick={() => onDelete(user.id)}
-        >
-          Delete
-        </button>
-      </div>
-    </li>
+    <Card className="mb-4">
+      <CardContent className="p-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div>
+            <p className="text-sm font-medium text-muted-foreground">Name</p>
+            <p className="text-lg font-semibold">{user.firstName} {user.lastName}</p>
+          </div>
+          <div>
+            <p className="text-sm font-medium text-muted-foreground">Age</p>
+            <p className="text-lg font-semibold">{user.age}</p>
+          </div>
+          <div>
+            <p className="text-sm font-medium text-muted-foreground">Email</p>
+            <p className="text-lg font-semibold">{user.email}</p>
+          </div>
+          <div>
+            <p className="text-sm font-medium text-muted-foreground">Country</p>
+            <p className="text-lg font-semibold">{user.country}</p>
+          </div>
+        </div>
+        <div className="flex gap-2 mt-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onEdit(user.id)}
+            className="flex items-center gap-2"
+          >
+            <Pencil className="h-4 w-4" />
+            Edit
+          </Button>
+          <Button
+            variant="destructive"
+            size="sm"
+            onClick={() => onDelete(user.id)}
+            className="flex items-center gap-2"
+          >
+            <Trash2 className="h-4 w-4" />
+            Delete
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -85,29 +104,45 @@ export default function UserList({
     }));
   }, [ageGroups]);
 
-  console.log("Average Age:", averageAge);
-  console.log("Age Groups:", ageGroups);
-
   return (
-    <div>
-      <ul className="flex flex-col gap-4">
-        {sortedUsers.map((user, index) => (
-          <UserViewInList key={user.id} user={user} index={index} onDelete={onDelete} onEdit={onEdit} />
-        ))}
-      </ul>
-      <div className="text-white font-bold text-2xl my-3">
-        <p>Average Age: {averageAge}</p>
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>User Statistics</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-2xl font-bold">Average Age: {averageAge}</p>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader>
+            <CardTitle>Age Distribution</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={200}>
+              <BarChart data={chartData} barSize={30}>
+                <XAxis dataKey="ageRange" stroke="hsl(var(--foreground))" />
+                <YAxis stroke="hsl(var(--foreground))" interval={1} />
+                <Tooltip />
+                <Bar dataKey="users" fill="hsl(var(--primary))" />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
       </div>
-      <div className="mt-6">
-        <h3 className="text-white text-2xl font-bold mb-2">User Age</h3>
-        <ResponsiveContainer width="100%" height={200}>
-          <BarChart data={chartData} barSize={30}>
-            <XAxis dataKey="ageRange" stroke="#ffffff" />
-            <YAxis stroke="#ffffff" interval={1} />
-            <Tooltip />
-            <Bar dataKey="users" fill="#009fff" />
-          </BarChart>
-        </ResponsiveContainer>
+
+      <div className="space-y-4">
+        {sortedUsers.map((user, index) => (
+          <UserViewInList
+            key={user.id}
+            user={user}
+            index={index}
+            onDelete={onDelete}
+            onEdit={onEdit}
+          />
+        ))}
       </div>
     </div>
   );

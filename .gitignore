@@ -3,4 +3,6 @@ node_modules
 prisma/dev.db*
 .vercel
 dist
-.env
+.env*
+!.env.example
+

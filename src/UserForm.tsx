@@ -1,5 +1,10 @@
 import { useState, useMemo } from "react";
 import { User } from "./types";
+import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
+import { Button } from "./components/ui/button";
+import { Input } from "./components/ui/input";
+import { Label } from "./components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./components/ui/select";
 
 export default function UserForm({
   minAge,
@@ -57,136 +62,130 @@ export default function UserForm({
     onSave(newUser);
   }
 
+  const isFormValid = !(
+    (valueAge && valueAge < (minAge ?? 18)) ||
+    valueFName.trim() === "" ||
+    valueLName.trim() === "" ||
+    valueCountry === "" ||
+    valueEmail === "" ||
+    isDuplicate ||
+    !valueEmailValid ||
+    (valueWebsite && !valueWebsiteValid)
+  );
+
   return (
-    <div>
-      {title ? <h2 className="text-white text-3xl font-bold p-1">{title}</h2> : null}
-      <div className="form text-white text-20 p-1">
-        <div className="fields pt-2.5 text-[13px]">
-          <label className="block">First Name*</label>
-          <input
-            className="text-black p-1 border border-white border-solid rounded-lg"
-            type="text"
-            value={valueFName}
-            placeholder="Enter First name"
-            onChange={(event) => {
-              setValueFName(event.target.value);
-            }}
-          />
-        </div>
-      </div>
+    <Card className="max-w-2xl mx-auto">
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="grid gap-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="firstName">First Name*</Label>
+              <Input
+                id="firstName"
+                value={valueFName}
+                placeholder="Enter First name"
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => setValueFName(event.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="lastName">Last Name*</Label>
+              <Input
+                id="lastName"
+                value={valueLName}
+                placeholder="Enter Last Name"
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => setValueLName(event.target.value)}
+              />
+            </div>
+          </div>
 
-      <div className="form text-white text-20 p-1">
-        <div className="fields pt-2.5 text-[13px]">
-          <label className="block">Last Name*</label>
-          <input
-            type="text"
-            className="text-black p-1 border border-white border-solid rounded-lg"
-            value={valueLName}
-            placeholder="Enter Last Name"
-            onChange={(event) => {
-              setValueLName(event.target.value);
-            }}
-          />
-        </div>
-      </div>
+          <div className="space-y-2">
+            <Label htmlFor="age">Age*</Label>
+            <Input
+              id="age"
+              type="number"
+              value={typeof valueAge === "number" ? valueAge : ""}
+              placeholder="Enter Age"
+              min={0}
+              max={100}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => setValueAge(parseInt(event.target.value, 10))}
+            />
+          </div>
 
-      <div className="form text-white text-20 p-1">
-        <div className="fields pt-2.5 text-[13px]">
-          <label className="block">Age*</label>
-          <input
-            type="number"
-            value={typeof valueAge === "number" ? valueAge : ""}
-            placeholder="Enter Age"
-            min={0}
-            max={100}
-            className="text-black p-1 border border-white border-solid rounded-lg"
-            onChange={(event) => {
-              setValueAge(parseInt(event.target.value, 10));
-            }}
-          />
-        </div>
-      </div>
+          <div className="space-y-2">
+            <Label htmlFor="email">Email*</Label>
+            <Input
+              id="email"
+              type="email"
+              value={valueEmail}
+              placeholder="Enter Email"
+              className={valueEmail && !valueEmailValid ? "border-destructive" : ""}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => setValueEmail(event.target.value)}
+            />
+            {valueEmail && !valueEmailValid && (
+              <p className="text-sm text-destructive">Please enter a valid email address.</p>
+            )}
+          </div>
 
-      <div className="form text-white text-20 p-1">
-        <div className="fields pt-2.5 text-[13px]">
-          <label className="block">Email*</label>
-          <input
-            type="email"
-            value={valueEmail}
-            placeholder="Enter Email"
-            className={`text-black p-1 border ${
-              valueEmail && !valueEmailValid ? "border-red-600" : "border-white"
-            } border-solid rounded-lg`}
-            onChange={(event) => setValueEmail(event.target.value)}
-          />
-          {valueEmail && !valueEmailValid && (
-            <p className="text-red-600 text-[12px]">Please enter a valid email address.</p>
+          <div className="space-y-2">
+            <Label htmlFor="website">Website</Label>
+            <Input
+              id="website"
+              type="url"
+              value={valueWebsite}
+              placeholder="Enter Website URL"
+              className={valueWebsite && !valueWebsiteValid ? "border-destructive" : ""}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => setValueWebsite(event.target.value)}
+            />
+            {valueWebsite && !valueWebsiteValid && (
+              <p className="text-sm text-destructive">Please enter a valid Website URL.</p>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="country">Country*</Label>
+            <Select value={valueCountry} onValueChange={setValueCountry}>
+              <SelectTrigger id="country">
+                <SelectValue placeholder="Select country" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="FI">Finland</SelectItem>
+                <SelectItem value="SW">Sweden</SelectItem>
+                <SelectItem value="NW">Norway</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {(valueAge && valueAge < (minAge ?? 18) || isDuplicate) && (
+            <div className="text-destructive font-medium">
+              {valueAge && valueAge < (minAge ?? 18)
+                ? `You need to be at least ${minAge ?? 18} to continue`
+                : isDuplicate
+                ? "A user with this name already exists"
+                : ""}
+            </div>
           )}
+
+          <div className="flex gap-4">
+            <Button
+              onClick={handleOnSave}
+              disabled={!isFormValid}
+            >
+              Save
+            </Button>
+            {onCancel && (
+              <Button
+                variant="outline"
+                onClick={onCancel}
+              >
+                Cancel
+              </Button>
+            )}
+          </div>
         </div>
-      </div>
-
-      <div className="form text-white text-20 p-1">
-        <div className="fields pt-2.5 text-[13px]">
-          <label className="block">Website</label>
-          <input
-            type="url"
-            className="text-black p-1 border border-white border-solid rounded-lg"
-            value={valueWebsite}
-            placeholder="Enter Website URL"
-            onChange={(event) => setValueWebsite(event.target.value)}
-          />
-          {valueWebsite && !valueWebsiteValid && (
-            <p className="text-red-600 text-[12px]">Please enter a valid Website URL.</p>
-          )}
-        </div>
-      </div>
-
-      <div className="form text-white text-20 p-1">
-        <div className="fields pt-2.5 text-[13px]">
-          <label className="block">Country*</label>
-          <select
-            value={valueCountry}
-            className="text-slate-800 p-1 border border-white border-solid rounded-lg"
-            onChange={(event) => setValueCountry(event.target.value)}
-          >
-            <option value="" disabled>
-              --Select country--
-            </option>
-            <option value="FI">Finland</option>
-            <option value="SW">Sweden</option>
-            <option value="NW">Norway</option>
-          </select>
-        </div>
-      </div>
-
-      <div className="text-red-600 font-bold py-3 w-[300px] min-h-[48px] mb-[10px]">
-        {valueAge && valueAge < (minAge ?? 18)
-          ? "You need to be at least " + (minAge ?? 18) + " to continue"
-          : isDuplicate
-          ? "A user with this name already exists"
-          : ""}
-      </div>
-
-      <button
-        className="disabled:text-gray-200 disabled:bg-black disabled:border-black px-6 py-1 mr-10 bg-lime-300 border-lime-300 border-solid rounded-lg"
-        disabled={
-          (valueAge && valueAge < (minAge ?? 18)) ||
-          valueFName.trim() === "" ||
-          valueLName.trim() === "" ||
-          valueCountry === "" ||
-          valueEmail === "" ||
-          isDuplicate
-        }
-        onClick={handleOnSave}
-      >
-        Save
-      </button>
-
-      {onCancel ? (
-        <button className="px-6 py-1 mr-10 bg-red-600 border-red-600 border-solid rounded-lg" onClick={onCancel}>
-          Cancel
-        </button>
-      ) : null}
-    </div>
+      </CardContent>
+    </Card>
   );
 }

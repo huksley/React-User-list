@@ -3,7 +3,14 @@ import cors from "cors";
 import morgan from "morgan";
 import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+import { install as installSourceMapSupport } from "source-map-support";
+installSourceMapSupport();
+
+const prisma = new PrismaClient({
+  log: process.env.NODE_ENV === "development" ? ["query", "info", "warn", "error"] : undefined,
+  datasourceUrl: process.env.DATABASE_URL ?? "file:./db.sqlite"
+});
+
 const app = express();
 const PORT = process.env.PORT || 5001;
 
